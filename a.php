@@ -61,47 +61,6 @@ class DB
             }
         }
     }
-  /*  function VTreeAdd(array &$elements, $parent = 0, $add_name, $add_id_parent){
-
-        foreach ($elements as $element) {
-
-            if ($element['parent'] == $parent){
-                DB::VTreeAdd($elements, $element['id'], $add_name, $add_id_parent);
-                if ($add_id_parent == $element['parent']) {
-                    DB::setTree("INSERT INTO `tree`(name) VALUES($add_name)");
-                }
-            }
-
-        }
-    }
-    function VTreeView(array &$elements, $parent = 0, $view_id){
-        $branch = array();
-
-        foreach ($elements as $element) {
-
-            if ($element['parent'] == $parent){
-
-                if ($element['parent'] == $view_id) {
-                    $children = DB::VTreeView($elements, $element['id'], $element['id']);
-                    if ($children) {
-                        $element['children'] = $children;
-                    }
-                    $branch[$element['id']] = $element;
-                    unset($element);
-                } elseif ($element['id'] == $view_id){
-                    $children = DB::VTreeView($elements, $element['id'], $view_id);
-                    if ($children) {
-                        $element['children'] = $children;
-                    }
-                    $branch[$element['id']] = $element;
-                    unset($element);
-                } else {
-                    DB::VTreeView($elements, $element['id'], $view_id);
-                }
-            }
-        }
-        return $branch;
-    }*/
 }
    /* $result = array();
     $array = DB::setTree("SELECT * FROM `tree`");
@@ -122,21 +81,24 @@ class DB
 
     $result = array();
     $array = DB::setTree("SELECT * FROM `tree`");
-    $result = DB::VTreeDelete($array,0,15); // объемное дерево удаление узла с потомками
+    $result = DB::VTreeDelete($array,0,26); // объемное дерево удаление узла с потомками
     $array = DB::setTree("SELECT * FROM `tree`");
     $result = DB::VTree($array,0);
     echo json_encode($result);
 
     $result = array();
     $array = DB::setTree("SELECT * FROM `tree`");
-    $result = DB::VTreeAdd($array,0,150, 'KafedraMEB',9); //добавление ответственного
-    $array = DB::setTree("SELECT * FROM `tree`");
-    $result = DB::VTree($array,0);
+    $result = DB::VTree($array,24); // вывод ветки по id родителя
     echo json_encode($result);
 
-    $result = array();
-    $array = DB::setTree("SELECT * FROM `tree`");
-    $result = DB::VTreeView($array,0,15); //вывод ветки
-    echo json_encode($result); */
+    $value_manage = 'Koshevin';
+    DB::setTree("DELETE FROM `head` WHERE manage = ?", $value_manage);//удаление ответственного
 
+    $value_id = 11;
+    $value = DB::setTree("SELECT * FROM `head` WHERE `id` = ?", $value_id );//вывод всех ответственных за подразделение
+    echo json_encode($value);
 
+    $value_id = 3;
+    DB::setTree("UPDATE `head` SET manage = 'Kydrav' WHERE id = ?", $value_id);//изменение ответственного
+    $value = DB::setTree("SELECT `manage` FROM `head` WHERE `id` = ?", $value_id);
+    echo json_encode($value);*/
